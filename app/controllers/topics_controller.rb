@@ -5,6 +5,7 @@ class TopicsController < ApplicationController
   # GET /topics.json
   def index
     @topics = Topic.all
+    @topics_sorted = sort_topics
   end
 
   # GET /topics/1
@@ -87,4 +88,9 @@ class TopicsController < ApplicationController
     def topic_params
       params.require(:topic).permit(:title, :description)
     end
-end
+
+    # Sort topics by their number of votes
+    def sort_topics
+      @topics_sorted = @topics.sort_by { |topic| topic.votes.count }.reverse!
+    end
+  end
